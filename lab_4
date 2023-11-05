@@ -1,0 +1,101 @@
+
+
+
+import { Injectable } from '@angular/core';  
+@Injectable({   providedIn: 'root' 
+}) export class TaskService {   tasks: string[] = []; 
+   constructor() { } 
+   addTask(task: string) {     this.tasks.push(task); 
+  }    getTasks() { 
+    return this.tasks; 
+  } 
+} 
+ 
+ 
+ 
+import { Component } from '@angular/core'; import { TaskService } from '../task.service';  
+@Component({   selector: 'app-task-form',   templateUrl: './task-form.component.html',   styleUrls: ['./task-form.component.css'] 
+}) export class TaskFormComponent {   newTask: string = ''; 
+ 
+  constructor(private taskService: TaskService) { } 
+   addTask() { 
+    if (this.newTask.trim() !== '') {       this.taskService.addTask(this.newTask);       this.newTask = ''; 
+    } 
+  } 
+} 
+ 
+ 
+ 
+import { Component } from '@angular/core'; import { TaskService } from '../task.service'; 
+ 
+@Component({   selector: 'app-task-list',   templateUrl: './task-list.component.html',   styleUrls: ['./task-list.component.css'] 
+}) export class TaskListComponent {   tasks: string[] = []; 
+   constructor(private taskService: TaskService) {     this.tasks = this.taskService.getTasks(); 
+  } 
+} 
+ 
+ 
+ 
+ 
+<mat-card> 
+  <mat-card-content> 
+    <h2>Add Task</h2> 
+    <mat-form-field> 
+      <input [(ngModel)]="newTask" matInput placeholder="Enter task" /> 
+    </mat-form-field> 
+    <button mat-raised-button color="primary" (click)="addTask()">Add Task</button> 
+  </mat-card-content> 
+</mat-card> 
+ 
+ 
+ 
+ 
+<mat-card> 
+  <mat-card-content> 
+    <h2>Task List</h2> 
+    <div *ngFor="let task of tasks">{{ task }}</div> 
+  </mat-card-content> 
+</mat-card> 
+ 
+ 
+ 
+<div style="text-align: center"> 
+  <h1>Task Manager App</h1> 
+  <app-task-form></app-task-form> 
+  <app-task-list></app-task-list> 
+</div> 
+ 
+ 
+ 
+ 
+import { NgModule } from '@angular/core'; import { BrowserModule } from '@angular/platform-browser'; import { FormsModule } from '@angular/forms'; 
+ import { AppComponent } from './app.component'; import { TaskFormComponent } from './task-form/task-form.component'; import { TaskListComponent } from './task-list/task-list.component'; import { TaskService } from './task.service';  
+@NgModule({   declarations: [     AppComponent, 
+    TaskFormComponent, 
+    TaskListComponent 
+  ], 
+  imports: [     BrowserModule, 
+    FormsModule 
+  ],   providers: [TaskService],   bootstrap: [AppComponent] 
+}) export class AppModule { } 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
